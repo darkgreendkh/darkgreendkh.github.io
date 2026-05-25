@@ -45,4 +45,6 @@ summary: 显示在文章列表中的摘要。
 
 ## GitHub Pages
 
-该站点按 GitHub 用户主页仓库部署，即仓库名为 `<username>.github.io`。推送至 `main` 后，`.github/workflows/deploy-pages.yml` 会测试、构建并发布 `build/client` 的静态页面。
+该站点当前按项目仓库 `darkgreendkh/my_website` 部署，发布地址为 `https://darkgreendkh.github.io/my_website/`。推送至 `main` 后，`.github/workflows/deploy-pages.yml` 会测试、构建并发布 `build/client` 的静态页面。
+
+在仓库 `Settings -> Pages` 中将发布源设置为 **GitHub Actions**。如果以后绑定独立域名，需将 `vite.config.ts` 与 `react-router.config.ts` 的站点基路径改回根路径 `/`。
