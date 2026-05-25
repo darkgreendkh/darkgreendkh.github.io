@@ -3,6 +3,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/my_website/",
+  base: "/",
   plugins: [reactRouter(), tsconfigPaths()]
 });
