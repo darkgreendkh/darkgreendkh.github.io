@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">暖色书桌</title>
+  <desc id="desc">有书、纸张和茶杯的简洁书桌插图。</desc>
+  <rect width="1200" height="620" fill="#e6dccf"/>
+  <path d="M0 458h1200v162H0z" fill="#c9ad91"/>
+  <path d="M104 86h404v354H104z" rx="8" fill="#f6f0e7"/>
+  <path d="M122 106h166v316H122z" fill="#ede4d6"/>
+  <path d="M306 106h184v316H306z" fill="#f8f2e8"/>
+  <path d="M305 106v316" stroke="#c9b7a2" stroke-width="2"/>
+  <path d="M148 161h103M148 188h84M148 215h98M333 160h116M333 187h130M333 214h90M333 269h126M333 296h108" stroke="#b8a28b" stroke-width="8" stroke-linecap="round"/>
+  <path d="M704 192h252l45 262H657z" fill="#b67750"/>
+  <path d="M733 215h195l28 186H701z" fill="#f4eadc"/>
+  <path d="M757 247h132M757 277h105M757 307h141" stroke="#cdb39b" stroke-width="9" stroke-linecap="round"/>
+  <ellipse cx="1071" cy="413" rx="70" ry="16" fill="#b5997e"/>
+  <path d="M1023 305h83v84c0 25-18 42-42 42s-41-17-41-42z" fill="#f3e9db"/>
+  <path d="M1103 326h22c35 0 35 46 2 46h-21" fill="none" stroke="#f3e9db" stroke-width="13"/>
+  <path d="M1080 278c19-24 2-41-9-55M1055 282c14-25-6-39-13-51" fill="none" stroke="#ad9077" stroke-width="6" stroke-linecap="round"/>
+</svg>

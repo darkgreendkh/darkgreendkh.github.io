@@ -1,0 +1,9 @@
+node_modules/
+build/
+coverage/
+playwright-report/
+test-results/
+.react-router/
+.cache/
+.DS_Store
+.superpowers/

@@ -1,0 +1,45 @@
+{
+  "name": "personal-reading-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "preview": "vite preview --host 127.0.0.1 --outDir build/client",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "typecheck": "react-router typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-router/node": "^7.15.1",
+    "github-slugger": "^2.0.0",
+    "gray-matter": "^4.0.3",
+    "mdast-util-to-string": "^4.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router": "^7.15.1",
+    "rehype-highlight": "^7.0.2",
+    "rehype-stringify": "^10.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "isbot": "^5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@react-router/dev": "^7.15.1",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
+  }
+}
