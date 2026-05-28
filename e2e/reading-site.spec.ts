@@ -5,6 +5,7 @@ test("homepage leads into a prerendered article reading view", async ({ page }, 
 
   const topbar = page.getByRole("banner");
   await expect(topbar.getByRole("link", { name: "綠屋" })).toBeVisible();
+  await expect(topbar.getByRole("link", { name: "綠屋" })).toHaveCSS("color", "rgb(1, 61, 42)");
   await expect(topbar.getByRole("link", { name: "GitHub" })).toBeVisible();
   await expect(topbar.getByRole("link", { name: "Email" })).toBeVisible();
   await expect(topbar.getByRole("link", { name: "綠屋" })).toHaveCSS("position", "static");
@@ -19,7 +20,23 @@ test("homepage leads into a prerendered article reading view", async ({ page }, 
   if (testInfo.project.name === "desktop") {
     await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "文章大纲", exact: true })).toBeVisible();
+    await expect(page.locator(".sidebar-brand")).toHaveCSS("color", "rgb(1, 61, 42)");
   }
+});
+
+test("desktop reader sidebars can hide and pin back", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Desktop sidebar controls");
+  await page.goto("/articles/designing-a-reading-space/");
+
+  await page.getByRole("button", { name: "隐藏文章" }).click();
+  await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeHidden();
+  await page.getByRole("button", { name: "固定显示文章" }).click();
+  await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "隐藏大纲" }).click();
+  await expect(page.getByRole("navigation", { name: "文章大纲", exact: true })).toBeHidden();
+  await page.getByRole("button", { name: "固定显示大纲" }).click();
+  await expect(page.getByRole("navigation", { name: "文章大纲", exact: true })).toBeVisible();
 });
 
 test("desktop reader sidebars resize and persist their widths", async ({ page }, testInfo) => {
