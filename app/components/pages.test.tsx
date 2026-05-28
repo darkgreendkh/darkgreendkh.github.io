@@ -97,23 +97,19 @@ describe("ReaderWorkspace", () => {
     expect(rightHandle).toHaveAttribute("aria-valuemax", "416");
   });
 
-  it("hides and restores fixed desktop sidebars", async () => {
-    const user = userEvent.setup();
+  it("keeps desktop sidebars fixed without hide controls", () => {
     render(
       <MemoryRouter>
         <ReaderWorkspace site={site} article={article} archive={archive} />
       </MemoryRouter>
     );
 
-    await user.click(screen.getByRole("button", { name: "隐藏文章" }));
-    expect(screen.queryByLabelText("文章归档")).not.toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "固定显示文章" }));
     expect(screen.getByLabelText("文章归档")).toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "隐藏大纲" }));
-    expect(screen.queryByLabelText("文章大纲")).not.toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "固定显示大纲" }));
     expect(screen.getByLabelText("文章大纲")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "隐藏文章" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "隐藏大纲" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "固定显示文章" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "固定显示大纲" })).not.toBeInTheDocument();
   });
 
   it("opens and closes navigation drawers with buttons, overlay, and Escape", async () => {

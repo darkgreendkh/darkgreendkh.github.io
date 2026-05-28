@@ -21,7 +21,6 @@ type ReaderWorkspaceProps = {
 type DrawerName = "archive" | "outline" | null;
 type PanelSide = "left" | "right";
 type PanelWidths = Record<PanelSide, number>;
-type PanelVisibility = Record<PanelSide, boolean>;
 
 const PANEL_STORAGE_KEY = "reader-panel-widths:v1";
 const COPY_RESET_DELAY = 1000;
@@ -33,10 +32,6 @@ const PANEL_LIMITS: Record<PanelSide, { defaultValue: number; min: number; max: 
 const DEFAULT_PANEL_WIDTHS: PanelWidths = {
   left: PANEL_LIMITS.left.defaultValue,
   right: PANEL_LIMITS.right.defaultValue
-};
-const DEFAULT_PANEL_VISIBILITY: PanelVisibility = {
-  left: true,
-  right: true
 };
 
 function clamp(value: number, min: number, max: number) {
@@ -142,16 +137,14 @@ function ArchiveNavigation({ archive, currentSlug }: { archive: ArchiveYear[]; c
 
 function OutlineNavigation({
   outline,
-  activeId,
-  showLabel = true
+  activeId
 }: {
   outline: OutlineEntry[];
   activeId: string | undefined;
-  showLabel?: boolean;
 }) {
   return (
     <nav className="outline-navigation" aria-label="文章大纲">
-      {showLabel && <p className="panel-label">本页目录</p>}
+      <p className="panel-label">本页目录</p>
       <ul>
         {outline.map((heading) => (
           <li className={`outline-depth-${heading.depth}`} key={heading.id}>
@@ -210,7 +203,6 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
   const [drawer, setDrawer] = useState<DrawerName>(null);
   const [activeId, setActiveId] = useState<string | undefined>(article.outline[0]?.id);
   const [panelWidths, setPanelWidths] = useState<PanelWidths>(DEFAULT_PANEL_WIDTHS);
-  const [panelVisibility, setPanelVisibility] = useState<PanelVisibility>(DEFAULT_PANEL_VISIBILITY);
   const [storageReady, setStorageReady] = useState(false);
   const lastButton = useRef<HTMLButtonElement | null>(null);
   const dragRef = useRef<{
@@ -281,10 +273,6 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
       const delta = (side === "left" ? direction : -direction) * 16;
       return constrainPanelWidths({ ...current, [side]: current[side] + delta }, side);
     });
-  }
-
-  function setPanelVisible(side: PanelSide, visible: boolean) {
-    setPanelVisibility((current) => ({ ...current, [side]: visible }));
   }
 
   async function handleArticleContentClick(event: ReactMouseEvent<HTMLDivElement>) {
@@ -364,8 +352,8 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
   }, []);
 
   const readerStyle = {
-    "--left-panel": panelVisibility.left ? `${panelWidths.left}px` : "0px",
-    "--right-panel": panelVisibility.right ? `${panelWidths.right}px` : "0px"
+    "--left-panel": `${panelWidths.left}px`,
+    "--right-panel": `${panelWidths.right}px`
   } as CSSProperties;
   const articleHtml = withCodeCopyButtons(article.html);
 
@@ -393,41 +381,20 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
         </div>
       </header>
 
-      {panelVisibility.left ? (
-        <aside className="reader-sidebar reader-sidebar-left">
-          <div className="sidebar-header">
-            <Link to="/" className="sidebar-brand brand-mark">
-              {site.name}
-            </Link>
-            <button
-              type="button"
-              className="panel-toggle-button"
-              aria-label="隐藏文章"
-              onClick={() => setPanelVisible("left", false)}
-            >
-              隐藏
-            </button>
-          </div>
-          <ArchiveNavigation archive={archive} currentSlug={article.slug} />
-          <ResizeHandle
-            side="left"
-            value={panelWidths.left}
-            onPointerDown={handleResizePointerDown}
-            onPointerMove={handleResizePointerMove}
-            onPointerUp={handleResizePointerUp}
-            onKeyDown={handleResizeKeyDown}
-          />
-        </aside>
-      ) : (
-        <button
-          type="button"
-          className="panel-reopen-button panel-reopen-left"
-          aria-label="固定显示文章"
-          onClick={() => setPanelVisible("left", true)}
-        >
-          文章
-        </button>
-      )}
+      <aside className="reader-sidebar reader-sidebar-left">
+        <Link to="/" className="sidebar-brand brand-mark">
+          {site.name}
+        </Link>
+        <ArchiveNavigation archive={archive} currentSlug={article.slug} />
+        <ResizeHandle
+          side="left"
+          value={panelWidths.left}
+          onPointerDown={handleResizePointerDown}
+          onPointerMove={handleResizePointerMove}
+          onPointerUp={handleResizePointerUp}
+          onKeyDown={handleResizeKeyDown}
+        />
+      </aside>
 
       <article className="reading-column">
         <header className="article-header">
@@ -442,39 +409,17 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
         />
       </article>
 
-      {panelVisibility.right ? (
-        <aside className="reader-sidebar reader-sidebar-right">
-          <ResizeHandle
-            side="right"
-            value={panelWidths.right}
-            onPointerDown={handleResizePointerDown}
-            onPointerMove={handleResizePointerMove}
-            onPointerUp={handleResizePointerUp}
-            onKeyDown={handleResizeKeyDown}
-          />
-          <div className="sidebar-header sidebar-header-right">
-            <span className="panel-label">本页目录</span>
-            <button
-              type="button"
-              className="panel-toggle-button"
-              aria-label="隐藏大纲"
-              onClick={() => setPanelVisible("right", false)}
-            >
-              隐藏
-            </button>
-          </div>
-          <OutlineNavigation outline={article.outline} activeId={activeId} showLabel={false} />
-        </aside>
-      ) : (
-        <button
-          type="button"
-          className="panel-reopen-button panel-reopen-right"
-          aria-label="固定显示大纲"
-          onClick={() => setPanelVisible("right", true)}
-        >
-          大纲
-        </button>
-      )}
+      <aside className="reader-sidebar reader-sidebar-right">
+        <ResizeHandle
+          side="right"
+          value={panelWidths.right}
+          onPointerDown={handleResizePointerDown}
+          onPointerMove={handleResizePointerMove}
+          onPointerUp={handleResizePointerUp}
+          onKeyDown={handleResizeKeyDown}
+        />
+        <OutlineNavigation outline={article.outline} activeId={activeId} />
+      </aside>
 
       {drawer && (
         <div className="drawer-layer">

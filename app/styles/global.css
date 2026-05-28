@@ -251,66 +251,12 @@ button {
   left: 0;
 }
 
-.sidebar-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0 0 3.2rem 0.45rem;
-}
-
-.sidebar-header-right {
-  align-items: center;
-  margin: 0 0 1.45rem;
-}
-
 .sidebar-brand {
   display: block;
-  margin: 0;
+  margin: 0 0 3.2rem 0.45rem;
   font-family: inherit;
   font-size: 1.1rem;
   letter-spacing: 0.04em;
-}
-
-.panel-toggle-button,
-.panel-reopen-button {
-  border: 1px solid rgb(15 91 60 / 16%);
-  border-radius: 0.35rem;
-  color: var(--accent);
-  background: rgb(245 239 230 / 58%);
-  font-size: 0.72rem;
-  line-height: 1.4;
-  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
-}
-
-.panel-toggle-button {
-  flex: 0 0 auto;
-  padding: 0.22rem 0.52rem;
-}
-
-.panel-toggle-button:hover,
-.panel-toggle-button:focus-visible,
-.panel-reopen-button:hover,
-.panel-reopen-button:focus-visible {
-  border-color: rgb(15 91 60 / 34%);
-  background: rgb(214 227 215 / 54%);
-}
-
-.panel-reopen-button {
-  position: fixed;
-  z-index: 12;
-  top: 1.4rem;
-  padding: 0.48rem 0.5rem;
-  box-shadow: 0 12px 30px rgb(58 43 31 / 9%);
-  writing-mode: vertical-rl;
-}
-
-.panel-reopen-left {
-  left: 1rem;
-}
-
-.panel-reopen-right {
-  right: 1rem;
 }
 
 .archive-year > p {
@@ -500,7 +446,7 @@ button {
 }
 
 .panel-label {
-  margin: 0;
+  margin: 0 0 1.45rem;
 }
 
 .outline-navigation li {
@@ -627,8 +573,7 @@ button {
     display: none;
   }
 
-  .panel-resize-handle,
-  .panel-reopen-button {
+  .panel-resize-handle {
     display: none;
   }
 

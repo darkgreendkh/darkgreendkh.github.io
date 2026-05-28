@@ -24,21 +24,6 @@ test("homepage leads into a prerendered article reading view", async ({ page }, 
   }
 });
 
-test("desktop reader sidebars can hide and pin back", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "desktop", "Desktop sidebar controls");
-  await page.goto("/articles/designing-a-reading-space/");
-
-  await page.getByRole("button", { name: "隐藏文章" }).click();
-  await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeHidden();
-  await page.getByRole("button", { name: "固定显示文章" }).click();
-  await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeVisible();
-
-  await page.getByRole("button", { name: "隐藏大纲" }).click();
-  await expect(page.getByRole("navigation", { name: "文章大纲", exact: true })).toBeHidden();
-  await page.getByRole("button", { name: "固定显示大纲" }).click();
-  await expect(page.getByRole("navigation", { name: "文章大纲", exact: true })).toBeVisible();
-});
-
 test("desktop reader sidebars resize and persist their widths", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "Desktop resize behavior");
   await page.goto("/articles/designing-a-reading-space/");
@@ -52,6 +37,8 @@ test("desktop reader sidebars resize and persist their widths", async ({ page },
   await expect(article).toBeVisible();
   await expect(leftHandle).toBeVisible();
   await expect(rightHandle).toBeVisible();
+  await expect(page.getByRole("button", { name: "隐藏文章" })).toBeHidden();
+  await expect(page.getByRole("button", { name: "隐藏大纲" })).toBeHidden();
 
   const initialLeftWidth = (await leftSidebar.boundingBox())?.width ?? 0;
   const initialRightWidth = (await rightSidebar.boundingBox())?.width ?? 0;

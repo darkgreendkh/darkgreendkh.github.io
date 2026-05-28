@@ -4,12 +4,17 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import stylesheet from "./styles/global.css?url";
 
 export function links() {
-  return [{ rel: "stylesheet", href: stylesheet }];
+  return [
+    { rel: "icon", href: "/favicon.ico", sizes: "any" },
+    { rel: "icon", type: "image/png", href: "/favicon.png" },
+    { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+    { rel: "stylesheet", href: stylesheet }
+  ];
 }
 
 export function meta() {
   return [
-    { title: "綠屋 | 写作、技术与日常观察" },
+    { title: "綠屋" },
     { name: "description", content: "一个安静、极简的个人文章网站。" }
   ];
 }
