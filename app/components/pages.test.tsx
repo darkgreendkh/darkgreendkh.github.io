@@ -9,7 +9,7 @@ import { HomePage } from "./HomePage";
 import { ReaderWorkspace } from "./ReaderWorkspace";
 
 const site: SiteConfig = {
-  name: "林间书页",
+  name: "绿屋",
   description: "写作与阅读",
   bio: "记录技术与日常观察。",
   links: [{ label: "GitHub", href: "https://github.com/example" }]
@@ -36,7 +36,7 @@ describe("HomePage", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("heading", { name: "林间书页" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "绿屋" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/example"
@@ -67,6 +67,24 @@ describe("ReaderWorkspace", () => {
       "aria-current",
       "location"
     );
+  });
+
+  it("renders accessible resize handles for desktop sidebars", () => {
+    render(
+      <MemoryRouter>
+        <ReaderWorkspace site={site} article={article} archive={archive} />
+      </MemoryRouter>
+    );
+
+    const leftHandle = screen.getByRole("separator", { name: "调整文章归档宽度" });
+    const rightHandle = screen.getByRole("separator", { name: "调整文章大纲宽度" });
+
+    expect(leftHandle).toHaveAttribute("aria-orientation", "vertical");
+    expect(leftHandle).toHaveAttribute("aria-valuemin", "192");
+    expect(leftHandle).toHaveAttribute("aria-valuemax", "448");
+    expect(rightHandle).toHaveAttribute("aria-orientation", "vertical");
+    expect(rightHandle).toHaveAttribute("aria-valuemin", "192");
+    expect(rightHandle).toHaveAttribute("aria-valuemax", "416");
   });
 
   it("opens and closes navigation drawers with buttons, overlay, and Escape", async () => {

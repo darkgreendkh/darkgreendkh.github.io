@@ -6,7 +6,7 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
-  name: "林间书页",
+  name: "绿屋",
   description: "写作、技术与日常观察",
   bio: "在这里整理我写过的文章，记录值得反复阅读的想法与实践。",
   links: [
