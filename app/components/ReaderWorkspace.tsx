@@ -4,6 +4,7 @@ import {
   useState,
   type CSSProperties,
   type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent
 } from "react";
 import { Link } from "react-router";
@@ -22,6 +23,7 @@ type PanelSide = "left" | "right";
 type PanelWidths = Record<PanelSide, number>;
 
 const PANEL_STORAGE_KEY = "reader-panel-widths:v1";
+const COPY_RESET_DELAY = 1000;
 const MIN_READING_WIDTH = 448;
 const PANEL_LIMITS: Record<PanelSide, { defaultValue: number; min: number; max: number }> = {
   left: { defaultValue: 296, min: 192, max: 448 },
@@ -94,6 +96,13 @@ function readStoredPanelWidths(): PanelWidths | null {
   } catch {
     return null;
   }
+}
+
+function withCodeCopyButtons(html: string) {
+  return html.replace(
+    /<pre([^>]*)>\s*<code/g,
+    '<pre$1><button type="button" class="code-copy-button" aria-label="Copy code">Copy</button><code'
+  );
 }
 
 function ArchiveNavigation({ archive, currentSlug }: { archive: ArchiveYear[]; currentSlug: string }) {
@@ -266,6 +275,26 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
     });
   }
 
+  async function handleArticleContentClick(event: ReactMouseEvent<HTMLDivElement>) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+    const button = target.closest<HTMLButtonElement>(".code-copy-button");
+    if (!button) {
+      return;
+    }
+    const code = button.closest("pre")?.querySelector("code");
+    const text = code?.textContent ?? "";
+    await navigator.clipboard.writeText(text);
+    button.textContent = "√Copied";
+    button.classList.add("is-copied");
+    window.setTimeout(() => {
+      button.textContent = "Copy";
+      button.classList.remove("is-copied");
+    }, COPY_RESET_DELAY);
+  }
+
   useEffect(() => {
     if (!drawer) {
       return;
@@ -326,11 +355,12 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
     "--left-panel": `${panelWidths.left}px`,
     "--right-panel": `${panelWidths.right}px`
   } as CSSProperties;
+  const articleHtml = withCodeCopyButtons(article.html);
 
   return (
     <main className="reader-page" style={readerStyle}>
       <header className="reader-toolbar">
-        <Link to="/" className="toolbar-brand">
+        <Link to="/" className="toolbar-brand brand-mark">
           {site.name}
         </Link>
         <div>
@@ -352,7 +382,7 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
       </header>
 
       <aside className="reader-sidebar reader-sidebar-left">
-        <Link to="/" className="sidebar-brand">
+        <Link to="/" className="sidebar-brand brand-mark">
           {site.name}
         </Link>
         <ArchiveNavigation archive={archive} currentSlug={article.slug} />
@@ -372,7 +402,11 @@ export function ReaderWorkspace({ site, article, archive }: ReaderWorkspaceProps
           <h1>{article.title}</h1>
           <p>{article.summary}</p>
         </header>
-        <div className="article-content" dangerouslySetInnerHTML={{ __html: article.html }} />
+        <div
+          className="article-content"
+          onClick={handleArticleContentClick}
+          dangerouslySetInnerHTML={{ __html: articleHtml }}
+        />
       </article>
 
       <aside className="reader-sidebar reader-sidebar-right">

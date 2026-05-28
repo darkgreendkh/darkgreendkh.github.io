@@ -3,7 +3,12 @@ import { expect, test } from "@playwright/test";
 test("homepage leads into a prerendered article reading view", async ({ page }, testInfo) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "绿屋" })).toBeVisible();
+  const topbar = page.getByRole("banner");
+  await expect(topbar.getByRole("link", { name: "綠屋" })).toBeVisible();
+  await expect(topbar.getByRole("link", { name: "GitHub" })).toBeVisible();
+  await expect(topbar.getByRole("link", { name: "Email" })).toBeVisible();
+  await expect(topbar.getByRole("link", { name: "綠屋" })).toHaveCSS("position", "static");
+  await expect(page.locator(".site-topbar")).toHaveCSS("position", "sticky");
   await expect(page.getByRole("link", { name: "为阅读留一片安静的空间" })).toBeVisible();
   await page.getByRole("link", { name: "为阅读留一片安静的空间" }).click();
 

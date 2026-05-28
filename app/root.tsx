@@ -9,7 +9,7 @@ export function links() {
 
 export function meta() {
   return [
-    { title: "绿屋 | 写作、技术与日常观察" },
+    { title: "綠屋 | 写作、技术与日常观察" },
     { name: "description", content: "一个安静、极简的个人文章网站。" }
   ];
 }

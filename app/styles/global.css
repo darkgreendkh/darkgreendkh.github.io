@@ -7,13 +7,13 @@
   --ink-soft: #6e645b;
   --ink-faint: #94887c;
   --rule: #ddd2c5;
-  --accent: #b65d3a;
-  --accent-soft: #ead5c9;
+  --accent: #0f5b3c;
+  --accent-soft: #d6e3d7;
   --code: #e9dfd2;
   --shadow: 0 24px 70px rgb(58 43 31 / 12%);
   --left-panel: 18.5rem;
   --right-panel: 16.75rem;
-  font-family: "Iowan Old Style", "Noto Serif SC", "Songti SC", "STSong", serif;
+  font-family: "Source Han Serif SC", "Source Han Serif", "Noto Serif SC", "Songti SC", "STSong", serif;
   color: var(--ink);
   background: var(--paper);
   font-synthesis: none;
@@ -51,15 +51,73 @@ button {
   cursor: pointer;
 }
 
-.home-page {
-  width: min(100% - 3rem, 53rem);
-  margin: 0 auto;
-  padding: clamp(4.5rem, 10vw, 7.75rem) 0 5rem;
-  animation: rise-in 620ms ease both;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.home-intro {
-  margin-bottom: clamp(4.5rem, 12vh, 7.5rem);
+.brand-mark {
+  display: inline-block;
+  color: #013d2a;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.site-topbar {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  border-bottom: 1px solid rgb(221 210 197 / 70%);
+  background: rgb(250 248 243 / 92%);
+  backdrop-filter: blur(14px);
+}
+
+.site-topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100% - 3rem, 56rem);
+  margin: 0 auto;
+  min-height: 3.65rem;
+}
+
+.site-topbar .brand-mark {
+  font-size: 1.7rem;
+}
+
+.site-links {
+  display: flex;
+  align-items: center;
+  gap: 1.45rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.site-links a {
+  padding: 0.35rem 0;
+  transition: color 180ms ease;
+}
+
+.site-links a:hover,
+.site-links a:focus-visible {
+  color: #007146;
+}
+
+.home-page {
+  width: min(100% - 3rem, 56rem);
+  margin: 0 auto;
+  padding: 0.55rem 0 5rem;
+  animation: rise-in 520ms ease both;
 }
 
 .home-eyebrow,
@@ -67,61 +125,28 @@ button {
 .article-entry time,
 .article-header time,
 .panel-label {
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
   letter-spacing: 0.12em;
   color: var(--ink-faint);
   font-size: 0.76rem;
   text-transform: uppercase;
 }
 
-.home-intro h1 {
-  margin: 1rem 0 1.3rem;
-  font-size: clamp(3.25rem, 8vw, 5.35rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.06em;
-}
-
-.home-bio {
-  max-width: 32rem;
-  margin: 0 0 2.15rem;
-  color: var(--ink-soft);
-  font-size: 1.12rem;
-  line-height: 1.9;
-}
-
-.social-links {
-  display: flex;
-  gap: 1.6rem;
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-  color: var(--ink-soft);
-  font-size: 0.92rem;
-}
-
-.social-links a {
-  border-bottom: 1px solid transparent;
-  padding-bottom: 0.25rem;
-  transition: border-color 180ms ease, color 180ms ease;
-}
-
-.social-links a:hover,
-.social-links a:focus-visible {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
 .section-heading {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding-bottom: 1.35rem;
+  padding: 1.4rem 0 1.35rem;
   border-bottom: 1px solid var(--rule);
 }
 
 .section-heading h2 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
+}
+
+.article-list {
+  display: grid;
 }
 
 .article-entry {
@@ -137,6 +162,7 @@ button {
   font-size: clamp(1.32rem, 3vw, 1.55rem);
   font-weight: 550;
   line-height: 1.38;
+  letter-spacing: 0;
 }
 
 .article-entry h3 a {
@@ -152,6 +178,10 @@ button {
   margin: 0;
   color: var(--ink-soft);
   line-height: 1.7;
+}
+
+.article-entry time {
+  align-self: center;
 }
 
 .reader-page {
@@ -170,7 +200,6 @@ button {
   height: 100svh;
   overflow-y: auto;
   background: var(--panel);
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 .reader-sidebar-left {
@@ -360,8 +389,9 @@ button {
 }
 
 .article-content pre {
+  position: relative;
   margin: 1.8rem 0 2.1rem;
-  padding: 1.3rem 1.45rem;
+  padding: 3rem 1.45rem 1.3rem;
   overflow-x: auto;
   border: 1px solid var(--rule);
   border-radius: 0.5rem;
@@ -369,6 +399,28 @@ button {
   color: #40362e;
   font-size: 0.9rem;
   line-height: 1.65;
+}
+
+.code-copy-button {
+  position: absolute;
+  top: 0.72rem;
+  right: 0.78rem;
+  padding: 0.22rem 0.62rem;
+  border: 1px solid rgb(15 91 60 / 18%);
+  border-radius: 0.24rem;
+  color: var(--ink-soft);
+  background: rgb(245 239 230 / 82%);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.code-copy-button:hover,
+.code-copy-button:focus-visible,
+.code-copy-button.is-copied {
+  color: var(--accent);
+  border-color: rgb(15 91 60 / 34%);
+  background: rgb(214 227 215 / 60%);
 }
 
 .article-content :not(pre) > code {
@@ -499,7 +551,6 @@ button {
     border-bottom: 1px solid var(--rule);
     background: rgb(245 239 230 / 92%);
     backdrop-filter: blur(10px);
-    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
   }
 
   .toolbar-brand {
@@ -541,7 +592,6 @@ button {
     z-index: 20;
     inset: 0;
     display: block;
-    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
   }
 
   .drawer-overlay {
@@ -587,17 +637,28 @@ button {
 }
 
 @media (max-width: 620px) {
-  .home-page {
-    width: min(100% - 2.3rem, 53rem);
-    padding-top: 3.65rem;
+  .site-topbar-inner {
+    width: min(100% - 2rem, 56rem);
+    min-height: 3.55rem;
   }
 
-  .home-intro {
-    margin-bottom: 3.7rem;
+  .site-topbar .brand-mark {
+    font-size: 1.45rem;
+  }
+
+  .site-links {
+    gap: 1rem;
+    font-size: 0.84rem;
+  }
+
+  .home-page {
+    width: min(100% - 2rem, 56rem);
+    padding-top: 0.45rem;
   }
 
   .article-entry {
     display: block;
+    padding: 1.35rem 0;
   }
 
   .article-entry time {

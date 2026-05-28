@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { Article, ArchiveYear } from "../content/articles.server";
 import type { SiteConfig } from "../site-config";
@@ -9,10 +9,13 @@ import { HomePage } from "./HomePage";
 import { ReaderWorkspace } from "./ReaderWorkspace";
 
 const site: SiteConfig = {
-  name: "绿屋",
+  name: "綠屋",
   description: "写作与阅读",
   bio: "记录技术与日常观察。",
-  links: [{ label: "GitHub", href: "https://github.com/example" }]
+  links: [
+    { label: "GitHub", href: "https://github.com/example" },
+    { label: "Email", href: "mailto:hello@example.com" }
+  ]
 };
 
 const article: Article = {
@@ -20,7 +23,7 @@ const article: Article = {
   date: "2026-05-25",
   summary: "从阅读节奏开始整理页面。",
   slug: "quiet-writing",
-  html: '<h2 id="开始">开始</h2><p>正文。</p>',
+  html: '<h2 id="开始">开始</h2><p>正文。</p><pre><code>const value = 1;</code></pre>',
   outline: [{ depth: 2, id: "开始", text: "开始" }]
 };
 
@@ -36,16 +39,23 @@ describe("HomePage", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("heading", { name: "绿屋" })).toBeInTheDocument();
+    const banner = screen.getByRole("banner");
+    expect(within(banner).getByRole("link", { name: "綠屋" })).toHaveClass("brand-mark");
     expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/example"
+    );
+    expect(screen.getByRole("link", { name: "Email" })).toHaveAttribute(
+      "href",
+      "mailto:hello@example.com"
     );
     expect(screen.getByRole("link", { name: "建立安静的写作空间" })).toHaveAttribute(
       "href",
       "/articles/quiet-writing/"
     );
-    expect(screen.getByText("2026.05.25")).toBeInTheDocument();
+    const date = screen.getByText("2026.05.25");
+    expect(date.tagName).toBe("TIME");
+    expect(date.parentElement).toHaveClass("article-entry");
   });
 });
 
@@ -107,5 +117,31 @@ describe("ReaderWorkspace", () => {
     expect(screen.getByRole("dialog", { name: "文章大纲" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "关闭弹层" }));
     expect(screen.queryByRole("dialog", { name: "文章大纲" })).not.toBeInTheDocument();
+  });
+
+  it("copies article code blocks and restores the copy label", async () => {
+    const user = userEvent.setup();
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText }
+    });
+
+    render(
+      <MemoryRouter>
+        <ReaderWorkspace site={site} article={article} archive={archive} />
+      </MemoryRouter>
+    );
+
+    const copyButton = screen.getByRole("button", { name: "Copy code" });
+    expect(copyButton).toHaveTextContent("Copy");
+
+    await user.click(copyButton);
+
+    expect(writeText).toHaveBeenCalledWith("const value = 1;");
+    expect(copyButton).toHaveTextContent("√Copied");
+
+    await new Promise((resolve) => window.setTimeout(resolve, 1100));
+    expect(copyButton).toHaveTextContent("Copy");
   });
 });
