@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "LXGW WenKai";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("@fontsource/lxgw-wenkai/files/lxgw-wenkai-latin-500-normal.woff2") format("woff2");
+}
+
 :root {
   --paper: #f5efe6;
   --paper-deep: #ece3d8;
@@ -13,11 +21,14 @@
   --shadow: 0 24px 70px rgb(58 43 31 / 12%);
   --left-panel: 18.5rem;
   --right-panel: 16.75rem;
-  font-family: "Source Han Serif SC", "Source Han Serif", "Noto Serif SC", "Songti SC", "STSong", serif;
+  --reading-font: "LXGW WenKai Screen", "LXGW WenKai", "霞鹜文楷", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-family: var(--reading-font);
   color: var(--ink);
   background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-kerning: normal;
 }
 
 *,
@@ -36,6 +47,8 @@ body {
   min-width: 320px;
   background: var(--paper);
   color: var(--ink);
+  font-family: var(--reading-font);
+  font-weight: 500;
 }
 
 a {
@@ -322,8 +335,8 @@ button {
   margin: 1.2rem 0 1.15rem;
   font-size: clamp(2.35rem, 4vw, 3.05rem);
   line-height: 1.25;
-  letter-spacing: -0.06em;
-  font-weight: 600;
+  letter-spacing: 0;
+  font-weight: 500;
 }
 
 .article-header p {
@@ -334,17 +347,20 @@ button {
 }
 
 .article-content {
-  font-size: 1.055rem;
-  line-height: 1.95;
+  color: #26211d;
+  font-size: 1.08rem;
+  font-weight: 500;
+  line-height: 1.86;
+  letter-spacing: 0;
 }
 
 .article-content h1,
 .article-content h2,
 .article-content h3 {
   scroll-margin-top: 2rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.4;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .article-content h1 {

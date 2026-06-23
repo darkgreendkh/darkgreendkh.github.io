@@ -12,9 +12,11 @@
     "typecheck": "react-router typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource/lxgw-wenkai": "^5.2.5",
     "@react-router/node": "^7.15.1",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
+    "isbot": "^5",
     "mdast-util-to-string": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -24,8 +26,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.0.0",
-    "isbot": "^5"
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
