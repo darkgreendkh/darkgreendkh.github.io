@@ -338,12 +338,18 @@ button {
   line-height: 1.95;
 }
 
+.article-content h1,
 .article-content h2,
 .article-content h3 {
   scroll-margin-top: 2rem;
   font-weight: 600;
   line-height: 1.4;
   letter-spacing: -0.04em;
+}
+
+.article-content h1 {
+  margin: 3.5rem 0 1.35rem;
+  font-size: 2rem;
 }
 
 .article-content h2 {
@@ -481,6 +487,10 @@ button {
 
 .outline-navigation a.is-current::before {
   background: var(--accent);
+}
+
+.outline-depth-2 a {
+  padding-left: 1.15rem;
 }
 
 .outline-depth-3 a {

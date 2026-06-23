@@ -20,7 +20,7 @@ export type ArticleFrontmatter = {
 };
 
 export type OutlineEntry = {
-  depth: 2 | 3;
+  depth: 1 | 2 | 3;
   id: string;
   text: string;
 };
@@ -93,7 +93,7 @@ async function renderMarkdown(markdown: string): Promise<{ html: string; outline
     .use(remarkParse)
     .use(() => (tree) => {
       visit(tree as Root, "heading", (heading: Heading) => {
-        if (heading.depth !== 2 && heading.depth !== 3) {
+        if (heading.depth !== 1 && heading.depth !== 2 && heading.depth !== 3) {
           return;
         }
         const text = toString(heading).trim();

@@ -3,7 +3,8 @@ import { expect, test } from "@playwright/test";
 const currentArticle = {
   path: "/articles/it-is-still-pending/",
   title: "悬而未决：小论文、暑期实习、秋招和大论文",
-  firstHeading: "散散步"
+  firstHeading: "散散步",
+  secondHeading: "聊聊天"
 };
 
 test("homepage leads into a prerendered article reading view", async ({ page }, testInfo) => {
@@ -25,7 +26,10 @@ test("homepage leads into a prerendered article reading view", async ({ page }, 
 
   if (testInfo.project.name === "desktop") {
     await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "文章大纲", exact: true })).toBeVisible();
+    const outline = page.getByRole("navigation", { name: "文章大纲", exact: true });
+    await expect(outline).toBeVisible();
+    await expect(outline.getByRole("link", { name: currentArticle.firstHeading })).toBeVisible();
+    await expect(outline.getByRole("link", { name: currentArticle.secondHeading })).toBeVisible();
     await expect(page.locator(".sidebar-brand")).toHaveCSS("color", "rgb(1, 61, 42)");
   }
 });
@@ -96,7 +100,10 @@ test("mobile reader exposes archive and outline drawers", async ({ page }, testI
   await expect(page.getByRole("dialog", { name: "文章目录" })).toBeHidden();
 
   await page.getByRole("button", { name: "打开文章大纲" }).click();
-  await expect(page.getByRole("dialog", { name: "文章大纲" })).toBeVisible();
+  const outlineDrawer = page.getByRole("dialog", { name: "文章大纲" });
+  await expect(outlineDrawer).toBeVisible();
+  await expect(outlineDrawer.getByRole("link", { name: currentArticle.firstHeading })).toBeVisible();
+  await expect(outlineDrawer.getByRole("link", { name: currentArticle.secondHeading })).toBeVisible();
   await page.getByRole("button", { name: "关闭文章大纲" }).click();
   await expect(page.getByRole("dialog", { name: "文章大纲" })).toBeHidden();
 });

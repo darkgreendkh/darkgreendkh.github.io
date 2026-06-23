@@ -57,14 +57,15 @@ describe("readArticles", () => {
       directory,
       "outline.md",
       "title: 标题\ndate: 2026-05-25\nsummary: 摘要",
-      "## 阅读\n\n### 阅读\n\n```ts\nconst site = true;\n```"
+      "# 阅读\n\n## 阅读\n\n### 阅读\n\n```ts\nconst site = true;\n```"
     );
 
     const [article] = await readArticles(directory);
 
     expect(article.outline).toEqual([
-      { depth: 2, id: "阅读", text: "阅读" },
-      { depth: 3, id: "阅读-1", text: "阅读" }
+      { depth: 1, id: "阅读", text: "阅读" },
+      { depth: 2, id: "阅读-1", text: "阅读" },
+      { depth: 3, id: "阅读-2", text: "阅读" }
     ]);
     expect(article.html).toContain('id="阅读"');
     expect(article.html).toContain("hljs");
