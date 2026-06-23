@@ -23,6 +23,7 @@ test("homepage leads into a prerendered article reading view", async ({ page }, 
   await expect(page).toHaveURL(currentArticle.path);
   await expect(page.getByRole("heading", { name: currentArticle.title, level: 1 })).toBeVisible();
   await expect(page.getByRole("heading", { name: currentArticle.firstHeading, level: 1 })).toBeVisible();
+  await expect(page.locator(".article-content strong").last()).toHaveCSS("font-synthesis-weight", "auto");
 
   if (testInfo.project.name === "desktop") {
     await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeVisible();
