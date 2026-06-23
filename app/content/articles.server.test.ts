@@ -30,6 +30,12 @@ afterEach(async () => {
 });
 
 describe("readArticles", () => {
+  it("loads every checked-in article", async () => {
+    const articles = await readArticles(join(process.cwd(), "content/articles"));
+
+    expect(articles.length).toBeGreaterThan(0);
+  });
+
   it("sorts published Markdown articles newest first and omits drafts", async () => {
     const directory = await createContentDirectory();
     await writeArticle(directory, "first.md", "title: 第一篇\ndate: 2026-02-12\nsummary: 第一篇摘要");

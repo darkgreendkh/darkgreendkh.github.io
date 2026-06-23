@@ -1,5 +1,11 @@
 import { expect, test } from "@playwright/test";
 
+const currentArticle = {
+  path: "/articles/it-is-still-pending/",
+  title: "悬而未决：小论文、暑期实习、秋招和大论文",
+  firstHeading: "散散步"
+};
+
 test("homepage leads into a prerendered article reading view", async ({ page }, testInfo) => {
   await page.goto("/");
 
@@ -10,12 +16,12 @@ test("homepage leads into a prerendered article reading view", async ({ page }, 
   await expect(topbar.getByRole("link", { name: "Email" })).toBeVisible();
   await expect(topbar.getByRole("link", { name: "綠屋" })).toHaveCSS("position", "static");
   await expect(page.locator(".site-topbar")).toHaveCSS("position", "sticky");
-  await expect(page.getByRole("link", { name: "为阅读留一片安静的空间" })).toBeVisible();
-  await page.getByRole("link", { name: "为阅读留一片安静的空间" }).click();
+  await expect(page.getByRole("link", { name: currentArticle.title })).toBeVisible();
+  await page.getByRole("link", { name: currentArticle.title }).click();
 
-  await expect(page).toHaveURL(/\/articles\/designing-a-reading-space\/$/);
-  await expect(page.getByRole("heading", { name: "为阅读留一片安静的空间", level: 1 })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "从内容开始", level: 2 })).toBeVisible();
+  await expect(page).toHaveURL(currentArticle.path);
+  await expect(page.getByRole("heading", { name: currentArticle.title, level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: currentArticle.firstHeading, level: 1 })).toBeVisible();
 
   if (testInfo.project.name === "desktop") {
     await expect(page.getByRole("navigation", { name: "文章归档", exact: true })).toBeVisible();
@@ -26,7 +32,7 @@ test("homepage leads into a prerendered article reading view", async ({ page }, 
 
 test("desktop reader sidebars resize and persist their widths", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "Desktop resize behavior");
-  await page.goto("/articles/designing-a-reading-space/");
+  await page.goto(currentArticle.path);
 
   const article = page.getByRole("article");
   const leftSidebar = page.locator(".reader-sidebar-left");
@@ -79,7 +85,7 @@ test("desktop reader sidebars resize and persist their widths", async ({ page },
 
 test("mobile reader exposes archive and outline drawers", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile", "Mobile drawer behavior");
-  await page.goto("/articles/designing-a-reading-space/");
+  await page.goto(currentArticle.path);
 
   await expect(page.getByRole("separator", { name: "调整文章归档宽度" })).toBeHidden();
   await expect(page.getByRole("separator", { name: "调整文章大纲宽度" })).toBeHidden();
